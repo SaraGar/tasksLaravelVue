@@ -26,13 +26,17 @@
         },
         methods: {
             newTask(){
-                let task = {
-                    id: 1, 
-                    description: this.description,
-                    created_at: '2020-05-25'
+                const params = {
+                    description: this.description
                 }
-                this.$emit('new', task);
                 this.description ="";
+                axios.post('/tasks', params).then(
+                    (response)=> {
+                        const task = response.data;
+                        this.$emit('new', task);
+                    }
+                );
+               
             }
         }
     }

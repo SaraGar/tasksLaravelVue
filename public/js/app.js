@@ -1935,13 +1935,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     newTask: function newTask() {
-      var task = {
-        id: 1,
-        description: this.description,
-        created_at: '2020-05-25'
+      var _this = this;
+
+      var params = {
+        description: this.description
       };
-      this.$emit('new', task);
       this.description = "";
+      axios.post('/tasks', params).then(function (response) {
+        var task = response.data;
+
+        _this.$emit('new', task);
+      });
     }
   }
 });
