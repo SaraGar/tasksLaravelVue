@@ -1979,6 +1979,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addTask: function addTask(task) {
       this.tasks.push(task);
+    },
+    deleteTask: function deleteTask(index) {
+      this.tasks.splice(index, 1);
     }
   }
 });
@@ -2013,6 +2016,11 @@ __webpack_require__.r(__webpack_exports__);
   props: ['task'],
   mounted: function mounted() {
     console.log('Component mounted.');
+  },
+  methods: {
+    onClickDelete: function onClickDelete() {
+      this.$emit('delete');
+    }
   }
 });
 
@@ -37644,8 +37652,16 @@ var render = function() {
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
-        _vm._l(_vm.tasks, function(task) {
-          return _c("task-component", { key: task.id, attrs: { task: task } })
+        _vm._l(_vm.tasks, function(task, index) {
+          return _c("task-component", {
+            key: task.id,
+            attrs: { task: task },
+            on: {
+              delete: function($event) {
+                return _vm.deleteTask(index)
+              }
+            }
+          })
         })
       ],
       2
@@ -37686,22 +37702,19 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _vm._m(0)
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("button", { staticClass: "btn btn-primary" }, [_vm._v(" Edit ")]),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-danger", on: { click: _vm.onClickDelete } },
+          [_vm._v(" Remove ")]
+        )
+      ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-footer" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [_vm._v(" Edit ")]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-danger" }, [_vm._v(" Remove ")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

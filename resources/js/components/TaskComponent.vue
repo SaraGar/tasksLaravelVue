@@ -7,7 +7,7 @@
                 </div>
             <div class="panel-footer">
                 <button class='btn btn-primary'> Edit </button>
-                <button class='btn btn-danger'> Remove </button>
+                <button class='btn btn-danger' v-on:click ='onClickDelete'> Remove </button>
             </div>
         </div>
     </div>    
@@ -19,6 +19,11 @@
        
         mounted() {
             console.log('Component mounted.')
+        },
+        methods:{
+            onClickDelete(){
+                this.$emit('delete');
+            }
         }
     }
 </script>
