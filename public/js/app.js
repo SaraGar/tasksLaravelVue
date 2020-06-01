@@ -1982,6 +1982,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteTask: function deleteTask(index) {
       this.tasks.splice(index, 1);
+    },
+    updateTask: function updateTask(index, task) {
+      this.tasks[index] = task;
     }
   }
 });
@@ -2012,14 +2015,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['task'],
+  data: function data() {
+    return {
+      editMode: false
+    };
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   },
   methods: {
     onClickDelete: function onClickDelete() {
       this.$emit('delete');
+    },
+    onClickEdit: function onClickEdit() {
+      this.editMode = true;
+    },
+    onClickUpdate: function onClickUpdate() {
+      this.editMode = false;
+      this.$emit('update', task);
     }
   }
 });
@@ -37659,6 +37676,12 @@ var render = function() {
             on: {
               delete: function($event) {
                 return _vm.deleteTask(index)
+              },
+              update: function($event) {
+                var i = arguments.length,
+                  argsArray = Array(i)
+                while (i--) argsArray[i] = arguments[i]
+                return _vm.updateTask.apply(void 0, [index].concat(argsArray))
               }
             }
           })
@@ -37697,17 +37720,68 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
       _c("div", [
-        _vm._v(
-          "\n                " + _vm._s(_vm.task.description) + "\n            "
-        )
+        _vm.editMode
+          ? _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.task.description,
+                  expression: "task.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.task.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.task, "description", $event.target.value)
+                }
+              }
+            })
+          : _c("p", [_vm._v(_vm._s(_vm.task.description))])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "panel-footer" }, [
-        _c("button", { staticClass: "btn btn-primary" }, [_vm._v(" Edit ")]),
+        _vm.editMode
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.onClickUpdate()
+                  }
+                }
+              },
+              [_vm._v(" Guardar ")]
+            )
+          : _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.onClickEdit()
+                  }
+                }
+              },
+              [_vm._v(" Edit ")]
+            ),
         _vm._v(" "),
         _c(
           "button",
-          { staticClass: "btn btn-danger", on: { click: _vm.onClickDelete } },
+          {
+            staticClass: "btn btn-danger",
+            on: {
+              click: function($event) {
+                return _vm.onClickDelete()
+              }
+            }
+          },
           [_vm._v(" Remove ")]
         )
       ])
