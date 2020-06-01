@@ -1924,12 +1924,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      description: ''
+    };
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
+  },
+  methods: {
+    newTask: function newTask() {
+      var task = {
+        id: 1,
+        description: this.description,
+        created_at: '2020-05-25'
+      };
+      this.$emit('new', task);
+      this.description = "";
+    }
   }
 });
 
@@ -1955,8 +1968,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      tasks: []
+    };
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
+  },
+  methods: {
+    addTask: function addTask(task) {
+      this.tasks.push(task);
+    }
   }
 });
 
@@ -1986,8 +2009,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['task'],
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -37538,24 +37561,45 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("Tasks")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("form", { attrs: { action: "" } }, [
+  return _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card-header" }, [_vm._v("Tasks")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c(
+        "form",
+        {
+          attrs: { action: "" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.newTask()
+            }
+          }
+        },
+        [
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "task" } }, [_vm._v("New task")]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.description,
+                  expression: "description"
+                }
+              ],
               staticClass: "form-control",
-              attrs: { type: "text", name: "task" }
+              attrs: { type: "text", name: "task" },
+              domProps: { value: _vm.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.description = $event.target.value
+                }
+              }
             })
           ]),
           _vm._v(" "),
@@ -37564,11 +37608,12 @@ var staticRenderFns = [
             { staticClass: "btn btn-success", attrs: { type: "submit" } },
             [_vm._v("Guardar")]
           )
-        ])
-      ])
+        ]
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -37595,13 +37640,15 @@ var render = function() {
       "div",
       { staticClass: "col-md-8 offset-md-2" },
       [
-        _c("form-component"),
+        _c("form-component", { on: { new: _vm.addTask } }),
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
-        _c("task-component")
+        _vm._l(_vm.tasks, function(task) {
+          return _c("task-component", { key: task.id, attrs: { task: task } })
+        })
       ],
-      1
+      2
     )
   ])
 }
@@ -37627,25 +37674,31 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card-header" }, [
+      _vm._v("Date " + _vm._s(_vm.task.created_at))
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c("div", [
+        _vm._v(
+          "\n                " + _vm._s(_vm.task.description) + "\n            "
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(0)
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("Publicado en HOY")]),
+    return _c("div", { staticClass: "panel-footer" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [_vm._v(" Edit ")]),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", [_vm._v("\n                 TEXTO\n             ")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "panel-footer" }, [
-          _c("button", { staticClass: "btn btn-primary" }, [_vm._v(" Edit ")]),
-          _vm._v(" "),
-          _c("button", { staticClass: "btn btn-danger" }, [_vm._v(" Remove ")])
-        ])
-      ])
+      _c("button", { staticClass: "btn btn-danger" }, [_vm._v(" Remove ")])
     ])
   }
 ]
