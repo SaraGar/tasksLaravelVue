@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <div class="card-header">Date {{task.created_at}}</div>
+        <div class="card-header">Date {{task.created_at | localTime}}</div>
         <div class="card-body">
                 <div>
                     <input v-if="editMode" type='text' class='form-control' v-model='task.description'>
@@ -45,6 +45,10 @@
                     this.$emit('update', task);
                 })
             }
-        },        
+        },     
+        filters: {
+            localTime: function (date) {
+    return moment(date, 'YYYY-MM-DD').format("DD-MM-YYYY");            }
+        }     
     }
 </script>
