@@ -28,14 +28,22 @@
         },
         methods:{
             onClickDelete(){
-                this.$emit('delete');
+                axios.delete(`/tasks/${this.task.id}`).then(() => {
+                 this.$emit('delete');
+                });
             },
             onClickEdit(){
                 this.editMode = true;
             },
             onClickUpdate(){
-                this.editMode = false;
-                this.$emit('update', task);
+                const params = {
+                    description : this.task.description
+                }
+                axios.put(`/tasks/${this.task.id}`, params).then((response) => {
+                    this.editMode = false;
+                    const task = response.data;
+                    this.$emit('update', task);
+                })
             }
         },        
     }

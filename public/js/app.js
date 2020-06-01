@@ -1978,7 +1978,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    var _this = this;
+
+    axios.get('/tasks').then(function (response) {
+      return _this.tasks = response.data;
+    });
   },
   methods: {
     addTask: function addTask(task) {
@@ -2033,14 +2037,27 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onClickDelete: function onClickDelete() {
-      this.$emit('delete');
+      var _this = this;
+
+      axios["delete"]("/tasks/".concat(this.task.id)).then(function () {
+        _this.$emit('delete');
+      });
     },
     onClickEdit: function onClickEdit() {
       this.editMode = true;
     },
     onClickUpdate: function onClickUpdate() {
-      this.editMode = false;
-      this.$emit('update', task);
+      var _this2 = this;
+
+      var params = {
+        description: this.task.description
+      };
+      axios.put("/tasks/".concat(this.task.id), params).then(function (response) {
+        _this2.editMode = false;
+        var task = response.data;
+
+        _this2.$emit('update', task);
+      });
     }
   }
 });

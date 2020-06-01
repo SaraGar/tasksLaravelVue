@@ -36,7 +36,7 @@ class TaskController extends Controller
         $task->description = $request->description;
         $task->user_id = auth()->id();
         $task->save();
-        
+
         return $task;
     }
 
@@ -52,6 +52,9 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $task->description = $request->description;
         $task->save();
+
+        return $task;
+
     }
 
     /**

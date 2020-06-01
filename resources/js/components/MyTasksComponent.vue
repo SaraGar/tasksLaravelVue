@@ -13,12 +13,11 @@
 
         data(){
             return {
-                tasks : [
-                ]
+                tasks : []
             }
         },
         mounted() {
-            console.log('Component mounted.')
+            axios.get('/tasks').then((response) => this.tasks = response.data);
         },
         methods: {
             addTask(task){
