@@ -24,7 +24,7 @@
         "sass-loader": "^8.0.0",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10",
-        "moment": "^2.15.0"
+        "moment": "^2.29.2"
     },
     "engines": {
         "node": "12.16.2",
